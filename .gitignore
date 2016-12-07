@@ -1,0 +1,6 @@
+*.log
+obj/
+*.pdb
+BussinessObjects/Bin/
+*.manifest
+.svn

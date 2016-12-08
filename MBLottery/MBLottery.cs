@@ -30,15 +30,14 @@ namespace MBLottery
             //this.skinEngine1.SkinFile = Application.StartupPath + "//Skins//DiamondRed.ssk";  
         }
         #region Field
-        private Dictionary<LotteryLevel, bool> _levelsIsLotteried = new Dictionary<LotteryLevel, bool>();
         private string inputPath = System.Windows.Forms.Application.StartupPath;
         private string outputPath = System.Windows.Forms.Application.StartupPath;
         private string logFileName = "MBLottery";
 
-        private bool _flag = false;
         public static int rollingCount = 14;
-        private int actualLotteryCount = 0;
-        private int targetLotteryCount = 10;
+        private Dictionary<LotteryLevel, int> acutualLotteryCountDic = new Dictionary<LotteryLevel, int>();
+        private Dictionary<LotteryLevel, int> targetLotteryCountDic = new Dictionary<LotteryLevel, int>();
+      
         private LotteryStatus _status = LotteryStatus.NotStarted;
         private LotteryLevel _level = LotteryLevel.ThirdLevel;
         /// <summary>
@@ -47,10 +46,10 @@ namespace MBLottery
         /// </summary>
         private Dictionary<int, Employee> pendingEmployees = new Dictionary<int, Employee>();
 
-        private List<Employee> rewardedEmployees = new List<Employee>();
+        private Dictionary<string, Employee> rewardedEmployees = new Dictionary<string, Employee>();
         private Employee currentRewardedEmployee = null;
-
         private int currentRewardedIndex = -1;
+
         private XmlDocument employeesDoc;
         private string employeesFilePath = "";
         private string resultFilePath = "";
@@ -59,9 +58,10 @@ namespace MBLottery
         private List<int> indexList = new List<int>();
         private bool _IsAuto;
         private AutoSizeFormClass asc = new AutoSizeFormClass();
-        private bool isCleaned = false;
         private int screenNo = 0;
-        private string selectedRewardedIndex = "";
+        private int giveUpIndex = 9999;
+
+
         #endregion
 
 
@@ -69,38 +69,51 @@ namespace MBLottery
         #region Private Method
 
 
-        private void _autoSelect()
+        private int getRemainCount(LotteryLevel theLevel)
         {
-            if (_IsAuto)
+            int remainCount = 0;
+            int actualLotteryCount = acutualLotteryCountDic[theLevel];
+            int targetLotteryCount = targetLotteryCountDic[theLevel];
+            remainCount = targetLotteryCount - actualLotteryCount;
+            if (remainCount < 0)
             {
-                if (actualLotteryCount >= targetLotteryCount)
-                {
-                    _levelsIsLotteried[_level] = true;
-                    actualLotteryCount = 0;
-                    switch (_level)
-                    {
-                        case LotteryLevel.ThirdLevel:
-                            SecondRadioButton_CheckedChanged(null, null);
-                            SecondRadioButton.Checked = true;
-                            break;
-                        case LotteryLevel.SecondLevel:
-                            FirstRadioButton_CheckedChanged(null, null);
-                            FirstRadioButton.Checked = true;
-                            break;
-                        case LotteryLevel.FirstLevel:
-                            SpecialRadioButton_CheckedChanged(null, null);
-                            SpecialRadioButton.Checked = true;
-                            break;
-
-                    }
-
-                }
+                remainCount = 0;
+            }
+            return remainCount;
+        }
+        private bool _autoSelect()
+        {
+            bool isOK = false;
+            if (getRemainCount(LotteryLevel.ThirdLevel) > 0)
+            {
+                isOK = true;
+                _level = LotteryLevel.ThirdLevel;
+                ThirdRadioButton.Checked = true;
+            }
+            else if (getRemainCount(LotteryLevel.SecondLevel) > 0)
+            {
+                isOK = true;
+                _level = LotteryLevel.SecondLevel;
+                SecondRadioButton.Checked = true;
+            }
+            else if (getRemainCount(LotteryLevel.FirstLevel) > 0)
+            {
+                isOK = true;
+                _level = LotteryLevel.FirstLevel;
+                FirstRadioButton.Checked = true;
+            }
+            else if (getRemainCount(LotteryLevel.SpecialLevel) > 0)
+            {
+                isOK = true;
+                _level = LotteryLevel.SpecialLevel;
+                SpecialRadioButton.Checked = true;
             }
             else
             {
                 _level = LotteryLevel.Unknown;
-                targetLotteryCount = -1;
             }
+
+            return isOK;
         }
 
         private void _getAwardedEmployee()
@@ -112,6 +125,8 @@ namespace MBLottery
             {
                 currentRewardedEmployee.Level = _level;
                 pendingEmployees.Remove(currentRewardedIndex);
+                rewardedEmployees.Add(currentRewardedEmployee.Id, currentRewardedEmployee);
+                acutualLotteryCountDic[_level] = acutualLotteryCountDic[_level] + 1;
                 _showAwardedEmployee();
                 _saveResult();
             }
@@ -133,7 +148,7 @@ namespace MBLottery
                 foreach (var item in tempDic)
                 {
                     item.Value.Level = _level;
-                    rewardedEmployees.Add(item.Value);
+                    rewardedEmployees.Add(item.Value.Id, item.Value);
                     pendingEmployees.Remove(item.Key);
                 }
                 tempDic.Clear();
@@ -142,12 +157,14 @@ namespace MBLottery
         private void _congratulateToSpecialAwarded()
         {
             var queryResults = from item in rewardedEmployees
-                               where item.Level == LotteryLevel.SpecialLevel
+                               where item.Value.Level == LotteryLevel.SpecialLevel
                                select item;
             foreach (var temp in queryResults)
             {
-                string info = "恭喜" + temp.Id + "获得特等奖！";
+                string info = "恭喜" + temp.Value.Id + "获得特等奖！";
+                string infoEN = "Congratulation: " + temp.Value.Id + " get special reward！";
                 InfoLabel.Text = info;
+                InfoENLabel.Text = infoEN;
                 break;
             }
         }
@@ -155,14 +172,19 @@ namespace MBLottery
         {
             try
             {
-                rewardedEmployees.Add(currentRewardedEmployee);
                 RewardedEmployeesListBox.Items.Clear();
-                int i = rewardedEmployees.Count;
+                List<Employee> tempList = new List<Employee>();
+                foreach (Employee temp in rewardedEmployees.Values)
+                {
+                    tempList.Add(temp);
+                }
+                int i = tempList.Count;
                 for (; i > 0; i--)
                 {
-                    Employee temp = rewardedEmployees[i - 1];
+                    Employee temp = tempList[i - 1];
                     RewardedEmployeesListBox.Items.Add(temp.Id + " 获得 " + getTransLevel(temp.Level));
                 }
+
             }
             catch (Exception ex)
             {
@@ -209,30 +231,6 @@ namespace MBLottery
             sw.Close();
         }
 
-        private void _showAwardedEmployees()
-        {
-            try
-            {
-                RewardedEmployeesListBox.Items.Clear();
-                foreach (var curEmployee in rewardedEmployees)
-                {
-                    RewardedEmployeesListBox.Items.Add(curEmployee.Id + " 获得 " + getTransLevel(curEmployee.Level));
-                    string xPath = "//Employee[@id='" + curEmployee.Id + "']";
-                    XmlElement theElement = (XmlElement)employeesDoc.SelectSingleNode(xPath);
-                    theElement.SetAttribute("lotteryLevel", Enum.GetName(typeof(LotteryLevel), curEmployee.Level));
-                    theElement.InnerText = "";
-                }
-                PendingEmployeesListBox.Items.Clear();
-                employeesDoc.Save(outputPath + "\\Employee.XML");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Exception");
-                _logHandler.logging(ex.Message);
-            }
-
-
-        }
         private string getTransLevel(LotteryLevel theLevel)
         {
 
@@ -371,16 +369,28 @@ namespace MBLottery
                     translatedName = targetElement.InnerText;
                     if (!_iDIsExisted(id))
                     {
-                        Employee newEmployee = new Employee();
-                        newEmployee.Id = id;
-                        newEmployee.Name = name;
-                        newEmployee.TranslatedName = translatedName;
-                        if (!pendingEmployees.ContainsKey(index))
-                        {
-                            pendingEmployees.Add(index, newEmployee);
-                            index++;
-                        }
+                        //Employee newEmployee = new Employee();
+                        //newEmployee.Id = id;
+                        //newEmployee.Name = name;
+                        //newEmployee.TranslatedName = translatedName;
 
+                        if (rewardedEmployees.ContainsKey(id))
+                        {
+                            rewardedEmployees[id].Name = name;
+                            rewardedEmployees[id].TranslatedName = translatedName;
+                        }
+                        else
+                        {
+                            Employee newEmployee = new Employee();
+                            newEmployee.Id = id;
+                            newEmployee.Name = name;
+                            newEmployee.TranslatedName = translatedName;
+                            if (!pendingEmployees.ContainsKey(index))
+                            {
+                                pendingEmployees.Add(index, newEmployee);
+                                index++;
+                            }
+                        }
                     }
                     else
                     {
@@ -396,19 +406,56 @@ namespace MBLottery
             }
 
         }
-        /// <summary>
-        /// check level and count is setted 
-        /// </summary>
-        /// <returns></returns>
-        private bool _checkPara()
+
+        private void _loadRewardedEmployees()
         {
-            bool isOK = false;
-            if (_level != LotteryLevel.Unknown && targetLotteryCount > 0)
+            int actualSpecialCount = 0;
+            int actualFirstCount = 0;
+            int actualSecondCount = 0;
+            int actualThirdCount = 0;
+            if (File.Exists(resultFilePath))
             {
-                isOK = true;
+                string encryptedString = File.ReadAllText(resultFilePath);
+                string decrytedString = EncryptDecryptFile.Decrypt(encryptedString);
+                string[] employeeList = decrytedString.Split('\n');
+                for (int i = 0; i < employeeList.Length; i++)
+                {
+                    string item = employeeList[i];
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        string[] info = item.Split(',');
+                        Employee curEmployee = new Employee();
+                        curEmployee.Id = info[0];
+                        curEmployee.Level = (LotteryLevel)(Enum.Parse(typeof(LotteryLevel), info[1]));
+                        if (curEmployee.Level == LotteryLevel.SpecialLevel)
+                        {
+                            actualSpecialCount++;
+                        }
+                        else if (curEmployee.Level == LotteryLevel.FirstLevel)
+                        {
+                            actualFirstCount++;
+                        }
+                        else if (curEmployee.Level == LotteryLevel.SecondLevel)
+                        {
+                            actualSecondCount++;
+                        }
+                        else if (curEmployee.Level == LotteryLevel.ThirdLevel)
+                        {
+                            actualThirdCount++;
+                        }
+                        rewardedEmployees.Add(curEmployee.Id, curEmployee);
+                    }
+                }
+               
+
             }
-            return isOK;
+            acutualLotteryCountDic[LotteryLevel.SpecialLevel] = actualSpecialCount;
+            acutualLotteryCountDic[LotteryLevel.FirstLevel] = actualFirstCount;
+            acutualLotteryCountDic[LotteryLevel.SecondLevel] = actualSecondCount;
+            acutualLotteryCountDic[LotteryLevel.ThirdLevel] = actualThirdCount;
         }
+
+
         private void _showOpenFileBtn()
         {
             if (!string.IsNullOrEmpty(employeesFilePath))
@@ -448,11 +495,28 @@ namespace MBLottery
 
         private void _initializeLevelDic()
         {
-            _levelsIsLotteried.Add(LotteryLevel.SpecialLevel, false);
-            _levelsIsLotteried.Add(LotteryLevel.FirstLevel, false);
-            _levelsIsLotteried.Add(LotteryLevel.SecondLevel, false);
-            _levelsIsLotteried.Add(LotteryLevel.ThirdLevel, false);
-            _levelsIsLotteried.Add(LotteryLevel.AdditionalLevel, false);
+
+            int targetSpecialCount = (int)SpecialRewardCountNum.Value;
+            int targetFirstCount = (int)FirstRewardCountNum.Value;
+            int targetSecondCount = (int)SecondRewardCountNum.Value;
+            int targetThirdCount = (int)ThirdRewardCountNum.Value;
+
+            int actualSpecialCount = (from item in rewardedEmployees where item.Value.Level == LotteryLevel.SpecialLevel select item).Count();
+            int actualFirstCount = (from item in rewardedEmployees where item.Value.Level == LotteryLevel.FirstLevel select item).Count();
+            int actualSecondCount = (from item in rewardedEmployees where item.Value.Level == LotteryLevel.SecondLevel select item).Count();
+            int actualThirdCount = (from item in rewardedEmployees where item.Value.Level == LotteryLevel.ThirdLevel select item).Count();
+
+            targetLotteryCountDic.Add(LotteryLevel.SpecialLevel, targetSpecialCount);
+            targetLotteryCountDic.Add(LotteryLevel.FirstLevel, targetFirstCount);
+            targetLotteryCountDic.Add(LotteryLevel.SecondLevel, targetSecondCount);
+            targetLotteryCountDic.Add(LotteryLevel.ThirdLevel, targetThirdCount);
+            targetLotteryCountDic.Add(LotteryLevel.AdditionalLevel, targetThirdCount);
+
+            acutualLotteryCountDic.Add(LotteryLevel.SpecialLevel, actualSpecialCount);
+            acutualLotteryCountDic.Add(LotteryLevel.FirstLevel, actualFirstCount);
+            acutualLotteryCountDic.Add(LotteryLevel.SecondLevel, actualSecondCount);
+            acutualLotteryCountDic.Add(LotteryLevel.ThirdLevel, actualThirdCount);
+            acutualLotteryCountDic.Add(LotteryLevel.AdditionalLevel, 0);
         }
 
         private void _maximizeForm(int screenNo = 0)
@@ -493,7 +557,14 @@ namespace MBLottery
             {
                 File.Delete(resultFilePath);
             }
-            isCleaned = true;
+            rewardedEmployees.Clear();
+            RewardedEmployeesListBox.Items.Clear();
+            acutualLotteryCountDic[LotteryLevel.SpecialLevel] = 0;
+            acutualLotteryCountDic[LotteryLevel.FirstLevel] = 0;
+            acutualLotteryCountDic[LotteryLevel.SecondLevel] = 0;
+            acutualLotteryCountDic[LotteryLevel.ThirdLevel] = 0;
+            AwardedEmployeePicBox.Visible = false;
+            PendingEmployeesListBox.Items.Clear();
         }
         #endregion
 
@@ -502,20 +573,12 @@ namespace MBLottery
         #region Event Handler
         private void LotteryButton_Click(object sender, EventArgs e)
         {
-            if (!isCleaned)
-            {
-                cleanData();
-            }
-            if (!_checkPara())
-            {
-                MessageBox.Show("Please set award level and count.", "Setting");
-                return;
-            }
-            if (_flag)
+            
+            
+            if (_status == LotteryStatus.Started)
             {
                 //user clicked "stop" button
                 //now should deal with rewarded employees
-                _flag = false;
                 LotteryButton.Text = "Start";
                 _status = LotteryStatus.Stopped;
 
@@ -526,46 +589,47 @@ namespace MBLottery
                 timer1.Enabled = false;
 
                 TotalEmployeesLabel.Text = pendingEmployees.Count.ToString();
-                InfoLabel.Text = "已完成" + getTransLevel(_level) + "抽奖";
-                _autoSelect();
+                InfoLabel.Text = "已完成" + getTransLevel(_level) + "抽奖,剩余" + getRemainCount(_level) + "个";
+                InfoENLabel.Text = Enum.GetName(typeof(LotteryLevel), _level) + " Lottery is completed, " + "Remaining " + getRemainCount(_level);
+                //_autoSelect();
                 if (_level == LotteryLevel.SpecialLevel)
                 {
                     _congratulateToSpecialAwarded();
                 }
                 GiveUpButton.Enabled = true;
             }
-            else
+            else if (_status == LotteryStatus.Stopped || _status == LotteryStatus.NotStarted)
             {
                 //user clicked "Start" button
                 //now is searching pending employees in the timer
-                if (targetLotteryCount > pendingEmployees.Count)
+                if (!_autoSelect())
                 {
-                    MessageBox.Show("Selected count should not bigger than total employees");
+                    //MessageBox.Show("本年度抽奖已经完成，祝大家吃好喝好玩好！！！");
+                    End theEnd = new End();
+                    
+                    theEnd.ShowDialog();
                     return;
                 }
-                if (_levelsIsLotteried[_level])
-                {
-                    MessageBox.Show(getTransLevel(_level) + "已经完成，请选择其他抽奖级别。");
-                    return;
-                }
-                if (_status == LotteryStatus.Stopped)
-                {
-                    _updatePendingEmp();
-                }
+                _updatePendingEmp();
                 GiveUpButton.Enabled = false;
-                _flag = true;
+                //WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
+
+                //wplayer.URL = "My MP3 file.mp3";
+                //wplayer.Controls.Play();
+
+
                 PendingEmployeesListBox.Items.Clear();
-                //RewardedEmployeesListBox.Items.Clear();
                 LotteryButton.Text = "Stop";
                 _status = LotteryStatus.Started;
                 InfoLabel.Text = "现在进行" + getTransLevel(_level) + "抽奖";
-                actualLotteryCount++;
+                InfoENLabel.Text = "Now getting " + Enum.GetName(typeof(LotteryLevel), _level) + " lottery";
                 timer1.Enabled = true;
 
                 AwardedEmployeePicBox.Visible = true;
             }
 
         }
+       
         private void timer1_Tick(object sender, EventArgs e)
         {
             _rollingPendingList();
@@ -587,27 +651,22 @@ namespace MBLottery
         private void SpecialRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             _level = LotteryLevel.SpecialLevel;
-            targetLotteryCount = int.Parse(SpecialRewardCountNum.Value.ToString());
-            _logHandler.logging("Special rewarded target count: " + targetLotteryCount);
+
         }
         private void FirstRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             _level = LotteryLevel.FirstLevel;
-            targetLotteryCount = int.Parse(FirstRewardCountNum.Value.ToString());
-            _logHandler.logging("First rewarded target count: " + targetLotteryCount);
+          
         }
         private void SecondRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             _level = LotteryLevel.SecondLevel;
-            targetLotteryCount = int.Parse(SecondRewardCountNum.Value.ToString());
-            _logHandler.logging("Second rewarded target count: " + targetLotteryCount);
+           
         }
 
         private void ThirdRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             _level = LotteryLevel.ThirdLevel;
-            targetLotteryCount = int.Parse(ThirdRewardCountNum.Value.ToString());
-            _logHandler.logging("Third rewarded target count: " + targetLotteryCount);
         }
         private void AutoSelectLevelCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -620,10 +679,14 @@ namespace MBLottery
             _maximizeForm();
             PendingEmployeesListBox.Items.Clear();
             RewardedEmployeesListBox.Items.Clear();
-
+            acutualLotteryCountDic.Clear();
+            targetLotteryCountDic.Clear();
             _IsAuto = AutoSelectLevelCheckBox.Checked;
             _initializeLevelDic();
+            //System.Media.SoundPlayer player = new System.Media.SoundPlayer();
 
+            //player.SoundLocation = "Sound.wav";
+            //player.Play();
             //setOutputPath();
             _logHandler = new LogHandler(outputPath, logFileName);
             if (_debugMode)
@@ -638,7 +701,9 @@ namespace MBLottery
                     return;
                 }
             }
+            _loadRewardedEmployees();
             _loadEmployees();
+            _showAwardedEmployee();
             _showOpenFileBtn();
             this.Show();
 
@@ -663,20 +728,11 @@ namespace MBLottery
         private void GiveUpButton_Click(object sender, EventArgs e)
         {
             string newPlainText = "";
-            actualLotteryCount--;
-            if (_levelsIsLotteried[_level] == true)
-            {
-                _levelsIsLotteried[_level] = false;
-            }
-            rewardedEmployees.Remove(currentRewardedEmployee);
+            rewardedEmployees.Remove(currentRewardedEmployee.Id);
             pendingEmployees.Add(currentRewardedIndex, currentRewardedEmployee);
-            RewardedEmployeesListBox.Items.Clear();
-            int i = rewardedEmployees.Count;
-            for (; i > 0; i--)
-            {
-                Employee temp = rewardedEmployees[i - 1];
-                RewardedEmployeesListBox.Items.Add(temp.Id + " 获得 " + getTransLevel(temp.Level));
-            }
+            //update from count dictionary
+            acutualLotteryCountDic[currentRewardedEmployee.Level] = acutualLotteryCountDic[currentRewardedEmployee.Level] - 1;
+            _showAwardedEmployee();
             //remove the rewarded employee from file
             string resultFilePath = System.Windows.Forms.Application.StartupPath + "\\result.txt";
             if (File.Exists(resultFilePath))
@@ -684,7 +740,7 @@ namespace MBLottery
                 string encryptedString = File.ReadAllText(resultFilePath);
                 string decrytedString = EncryptDecryptFile.Decrypt(encryptedString);
                 string[] employeeList = decrytedString.Split('\n');
-                for (i = 0; i < employeeList.Length; i++)
+                for (int i = 0; i < employeeList.Length; i++)
                 {
                     string item = employeeList[i];
                     if (!string.IsNullOrEmpty(item))
@@ -716,6 +772,7 @@ namespace MBLottery
         private void RewardedEmployeesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             string curItem = RewardedEmployeesListBox.SelectedItem.ToString();
+            string selectedRewardedIndex = "";
             curItem = curItem.Trim();
             if (!string.IsNullOrEmpty(curItem))
             {
@@ -723,15 +780,15 @@ namespace MBLottery
                 string[] rewardedInfo = curItem.Split(' ');
                 selectedRewardedIndex = rewardedInfo[0];
                 var queryResults = from item in rewardedEmployees
-                                   where item.Id == selectedRewardedIndex
+                                   where item.Value.Id == selectedRewardedIndex
                                    select item;
                 foreach (var item in queryResults)
                 {
-                    if (item != null)
+                    if (item.Value != null)
                     {
-                        currentRewardedEmployee = (Employee)item;
-                        currentRewardedIndex = 999999;
-
+                        currentRewardedEmployee = item.Value;
+                        currentRewardedIndex = giveUpIndex;
+                        giveUpIndex++;
                     }
                 }
 
@@ -744,6 +801,7 @@ namespace MBLottery
                 {
                     AwardedEmployeePicBox.Image = Image.FromFile(inputPath + "\\Images\\Employees\\MB.jpg");
                 }
+                AwardedEmployeePicBox.Visible = true;
             }
 
         }
@@ -754,7 +812,39 @@ namespace MBLottery
             GiveUpButton_Click(null, null);
             BackToPoolButton.Enabled = false;
         }
+        private void ResetButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("你确定要删除抽奖记录吗", "复位", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                cleanData();
+            }
+        }
 
+        private void SpecialRewardCountNum_ValueChanged(object sender, EventArgs e)
+        {
+            int targetSpecialCount = (int)SpecialRewardCountNum.Value;
+            targetLotteryCountDic[LotteryLevel.SpecialLevel] = targetSpecialCount;
+        }
+
+        private void FirstRewardCountNum_ValueChanged(object sender, EventArgs e)
+        {
+            int targetFirstCount = (int)FirstRewardCountNum.Value;
+            targetLotteryCountDic[LotteryLevel.FirstLevel] = targetFirstCount;
+        }
+
+        private void SecondRewardCountNum_ValueChanged(object sender, EventArgs e)
+        {
+            int targetSecondCount = (int)SecondRewardCountNum.Value;
+            targetLotteryCountDic[LotteryLevel.SecondLevel] = targetSecondCount;
+        }
+
+        private void ThirdRewardCountNum_ValueChanged(object sender, EventArgs e)
+        {
+            int targetThirdCount = (int)ThirdRewardCountNum.Value;
+            targetLotteryCountDic[LotteryLevel.ThirdLevel] = targetThirdCount;
+        }
         #endregion
+
+       
     }
 }

@@ -84,6 +84,7 @@
             this.BackToPoolButton.Size = new System.Drawing.Size(47, 44);
             this.BackToPoolButton.TabIndex = 21;
             this.BackToPoolButton.UseVisualStyleBackColor = false;
+            this.BackToPoolButton.Visible = false;
             this.BackToPoolButton.Click += new System.EventHandler(this.BackToPoolButton_Click);
             // 
             // ReLotteryButton
@@ -96,6 +97,7 @@
             this.ReLotteryButton.TabIndex = 22;
             this.ReLotteryButton.Text = "重新抽奖";
             this.ReLotteryButton.UseVisualStyleBackColor = false;
+            this.ReLotteryButton.Visible = false;
             this.ReLotteryButton.Click += new System.EventHandler(this.ReLotteryButton_Click);
             // 
             // AwardedEmployeePicBox

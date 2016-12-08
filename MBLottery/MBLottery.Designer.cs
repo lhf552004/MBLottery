@@ -61,6 +61,12 @@
             this.GiveUpButton = new System.Windows.Forms.Button();
             this.ShowRewardedListButton = new System.Windows.Forms.Button();
             this.BackToPoolButton = new System.Windows.Forms.Button();
+            this.ResetButton = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.InfoENLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.AwardedEmployeePicBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpecialRewardCountNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FirstRewardCountNum)).BeginInit();
@@ -112,11 +118,11 @@
             this.RewardedEmployeesLabel.BackColor = System.Drawing.Color.Transparent;
             this.RewardedEmployeesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RewardedEmployeesLabel.ForeColor = System.Drawing.Color.Gold;
-            this.RewardedEmployeesLabel.Location = new System.Drawing.Point(744, 329);
+            this.RewardedEmployeesLabel.Location = new System.Drawing.Point(739, 329);
             this.RewardedEmployeesLabel.Name = "RewardedEmployeesLabel";
-            this.RewardedEmployeesLabel.Size = new System.Drawing.Size(96, 25);
+            this.RewardedEmployeesLabel.Size = new System.Drawing.Size(210, 25);
             this.RewardedEmployeesLabel.TabIndex = 2;
-            this.RewardedEmployeesLabel.Text = "获奖名单";
+            this.RewardedEmployeesLabel.Text = "Rewarded Employee";
             // 
             // OpenEmployeesFileDialog
             // 
@@ -141,7 +147,7 @@
             this.TotalEmployeesLabel.BackColor = System.Drawing.Color.Transparent;
             this.TotalEmployeesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TotalEmployeesLabel.ForeColor = System.Drawing.Color.Gold;
-            this.TotalEmployeesLabel.Location = new System.Drawing.Point(486, 215);
+            this.TotalEmployeesLabel.Location = new System.Drawing.Point(503, 226);
             this.TotalEmployeesLabel.Name = "TotalEmployeesLabel";
             this.TotalEmployeesLabel.Size = new System.Drawing.Size(27, 29);
             this.TotalEmployeesLabel.TabIndex = 9;
@@ -227,11 +233,11 @@
             this.SubjectLabel.BackColor = System.Drawing.Color.Transparent;
             this.SubjectLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SubjectLabel.ForeColor = System.Drawing.Color.Yellow;
-            this.SubjectLabel.Location = new System.Drawing.Point(338, 111);
+            this.SubjectLabel.Location = new System.Drawing.Point(312, 111);
             this.SubjectLabel.Name = "SubjectLabel";
             this.SubjectLabel.Size = new System.Drawing.Size(626, 55);
             this.SubjectLabel.TabIndex = 9;
-            this.SubjectLabel.Text = "纽豹集团无锡2016年会抽奖";
+            this.SubjectLabel.Text = "纽豹集团无锡2017年会抽奖";
             // 
             // label5
             // 
@@ -241,9 +247,9 @@
             this.label5.ForeColor = System.Drawing.Color.Gold;
             this.label5.Location = new System.Drawing.Point(12, 329);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(96, 25);
+            this.label5.Size = new System.Drawing.Size(190, 25);
             this.label5.TabIndex = 2;
-            this.label5.Text = "滚动名单";
+            this.label5.Text = "Rolling Employees";
             // 
             // StatusLabel
             // 
@@ -265,7 +271,7 @@
             this.RewardedEmployeesListBox.ForeColor = System.Drawing.Color.Gold;
             this.RewardedEmployeesListBox.FormattingEnabled = true;
             this.RewardedEmployeesListBox.ItemHeight = 25;
-            this.RewardedEmployeesListBox.Location = new System.Drawing.Point(744, 357);
+            this.RewardedEmployeesListBox.Location = new System.Drawing.Point(744, 359);
             this.RewardedEmployeesListBox.Name = "RewardedEmployeesListBox";
             this.RewardedEmployeesListBox.Size = new System.Drawing.Size(270, 304);
             this.RewardedEmployeesListBox.TabIndex = 4;
@@ -290,7 +296,7 @@
             this.InfoLabel.BackColor = System.Drawing.Color.Transparent;
             this.InfoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InfoLabel.ForeColor = System.Drawing.Color.Gold;
-            this.InfoLabel.Location = new System.Drawing.Point(390, 280);
+            this.InfoLabel.Location = new System.Drawing.Point(391, 280);
             this.InfoLabel.Name = "InfoLabel";
             this.InfoLabel.Size = new System.Drawing.Size(0, 25);
             this.InfoLabel.TabIndex = 2;
@@ -308,6 +314,7 @@
             this.AutoSelectLevelCheckBox.TabIndex = 14;
             this.AutoSelectLevelCheckBox.Text = "自动选择";
             this.AutoSelectLevelCheckBox.UseVisualStyleBackColor = false;
+            this.AutoSelectLevelCheckBox.Visible = false;
             this.AutoSelectLevelCheckBox.CheckedChanged += new System.EventHandler(this.AutoSelectLevelCheckBox_CheckedChanged);
             // 
             // SetScreenButton
@@ -344,6 +351,7 @@
             0,
             0,
             0});
+            this.SpecialRewardCountNum.ValueChanged += new System.EventHandler(this.SpecialRewardCountNum_ValueChanged);
             // 
             // FirstRewardCountNum
             // 
@@ -357,6 +365,7 @@
             0,
             0,
             0});
+            this.FirstRewardCountNum.ValueChanged += new System.EventHandler(this.FirstRewardCountNum_ValueChanged);
             // 
             // SecondRewardCountNum
             // 
@@ -370,6 +379,7 @@
             0,
             0,
             0});
+            this.SecondRewardCountNum.ValueChanged += new System.EventHandler(this.SecondRewardCountNum_ValueChanged);
             // 
             // ThirdRewardCountNum
             // 
@@ -383,6 +393,7 @@
             0,
             0,
             0});
+            this.ThirdRewardCountNum.ValueChanged += new System.EventHandler(this.ThirdRewardCountNum_ValueChanged);
             // 
             // label1
             // 
@@ -430,17 +441,19 @@
             this.GiveUpButton.TabIndex = 18;
             this.GiveUpButton.Text = "放弃";
             this.GiveUpButton.UseVisualStyleBackColor = false;
+            this.GiveUpButton.Visible = false;
             this.GiveUpButton.Click += new System.EventHandler(this.GiveUpButton_Click);
             // 
             // ShowRewardedListButton
             // 
             this.ShowRewardedListButton.BackColor = System.Drawing.Color.Red;
-            this.ShowRewardedListButton.Location = new System.Drawing.Point(929, 45);
+            this.ShowRewardedListButton.Location = new System.Drawing.Point(17, 119);
             this.ShowRewardedListButton.Name = "ShowRewardedListButton";
             this.ShowRewardedListButton.Size = new System.Drawing.Size(74, 63);
             this.ShowRewardedListButton.TabIndex = 19;
             this.ShowRewardedListButton.Text = "获奖记录";
             this.ShowRewardedListButton.UseVisualStyleBackColor = false;
+            this.ShowRewardedListButton.Visible = false;
             this.ShowRewardedListButton.Click += new System.EventHandler(this.ShowRewardedListButton_Click);
             // 
             // BackToPoolButton
@@ -454,8 +467,77 @@
             this.BackToPoolButton.Size = new System.Drawing.Size(47, 44);
             this.BackToPoolButton.TabIndex = 20;
             this.BackToPoolButton.UseVisualStyleBackColor = false;
-            this.BackToPoolButton.Visible = false;
             this.BackToPoolButton.Click += new System.EventHandler(this.BackToPoolButton_Click);
+            // 
+            // ResetButton
+            // 
+            this.ResetButton.BackColor = System.Drawing.Color.Red;
+            this.ResetButton.Location = new System.Drawing.Point(17, 59);
+            this.ResetButton.Name = "ResetButton";
+            this.ResetButton.Size = new System.Drawing.Size(75, 49);
+            this.ResetButton.TabIndex = 21;
+            this.ResetButton.Text = "重新抽奖";
+            this.ResetButton.UseVisualStyleBackColor = false;
+            this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 21F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.Yellow;
+            this.label7.Location = new System.Drawing.Point(304, 76);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(713, 32);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "Muehlbauer (Wuxi) 2017 Annual Dinner And Lottery";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.Transparent;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.Gold;
+            this.label8.Location = new System.Drawing.Point(302, 244);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(279, 24);
+            this.label8.TabIndex = 9;
+            this.label8.Text = "Total of Pending Employees ";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.Gold;
+            this.label9.Location = new System.Drawing.Point(739, 304);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(96, 25);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "获奖名单";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.Gold;
+            this.label10.Location = new System.Drawing.Point(12, 304);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(96, 25);
+            this.label10.TabIndex = 2;
+            this.label10.Text = "滚动名单";
+            // 
+            // InfoENLabel
+            // 
+            this.InfoENLabel.AutoSize = true;
+            this.InfoENLabel.BackColor = System.Drawing.Color.Transparent;
+            this.InfoENLabel.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InfoENLabel.ForeColor = System.Drawing.Color.Gold;
+            this.InfoENLabel.Location = new System.Drawing.Point(391, 312);
+            this.InfoENLabel.Name = "InfoENLabel";
+            this.InfoENLabel.Size = new System.Drawing.Size(0, 23);
+            this.InfoENLabel.TabIndex = 22;
             // 
             // MBLottery
             // 
@@ -464,6 +546,8 @@
             this.BackgroundImage = global::MBLottery.Properties.Resources.Background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1024, 768);
+            this.Controls.Add(this.InfoENLabel);
+            this.Controls.Add(this.ResetButton);
             this.Controls.Add(this.BackToPoolButton);
             this.Controls.Add(this.ShowRewardedListButton);
             this.Controls.Add(this.GiveUpButton);
@@ -479,7 +563,9 @@
             this.Controls.Add(this.RewardedEmployeesListBox);
             this.Controls.Add(this.InfoLabel);
             this.Controls.Add(this.StatusLabel);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label5);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.RewardedEmployeesLabel);
             this.Controls.Add(this.ThirdRadioButton);
             this.Controls.Add(this.SecondRadioButton);
@@ -492,7 +578,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.TotalEmployeesLabel);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.SubjectLabel);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.label6);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MBLottery";
@@ -544,6 +632,12 @@
         private System.Windows.Forms.Button GiveUpButton;
         private System.Windows.Forms.Button ShowRewardedListButton;
         private System.Windows.Forms.Button BackToPoolButton;
+        private System.Windows.Forms.Button ResetButton;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label InfoENLabel;
     }
 }
 

@@ -18,7 +18,10 @@ namespace MBLottery
         {
             InitializeComponent();
         }
-        private Dictionary<string, string> giveUpList = new Dictionary<string, string>();
+        /// <summary>
+        /// it loads employees' id who give up reward
+        /// </summary>
+        private List<string> giveUpIdList = new List<string>();
         /// <summary>
         /// key is index, which is used to sort employee
         /// </summary>
@@ -34,12 +37,13 @@ namespace MBLottery
         private Employee currentRewardedEmployee = null;
         private int currentRewardedIndex = -1;
         private string inputPath = System.Windows.Forms.Application.StartupPath;
-
+        private LotteryLevel _level;
+        private string _curRemovedId = "";
         private void ShowRewardedEmployees_Load(object sender, EventArgs e)
         {
             resultFilePath = System.Windows.Forms.Application.StartupPath + "\\result.txt";
             rewardedEmployees.Clear();
-            giveUpList.Clear();
+            giveUpIdList.Clear();
             giveUpItemList.Clear();
             loadRewardedEmployees();
             _loadEmployees();
@@ -60,7 +64,7 @@ namespace MBLottery
                         string[] info = item.Split(',');
                         Employee curEmployee = new Employee();
                         curEmployee.Id = info[0];
-                        curEmployee.Level =(LotteryLevel)(Enum.Parse(typeof(LotteryLevel), info[1]));
+                        curEmployee.Level = (LotteryLevel)(Enum.Parse(typeof(LotteryLevel), info[1]));
                         rewardedEmployees.Add(curEmployee.Id, curEmployee);
                         RewardedEmployeesList.Items.Add(info[0]);
                         RewardedEmployeesList.Items[i].SubItems.Add(info[1]);
@@ -102,7 +106,7 @@ namespace MBLottery
                         {
                             rewardedEmployees[id].Name = name;
                             rewardedEmployees[id].TranslatedName = translatedName;
-                        } 
+                        }
                         else
                         {
                             Employee newEmployee = new Employee();
@@ -122,7 +126,7 @@ namespace MBLottery
                     }
 
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -145,15 +149,19 @@ namespace MBLottery
         }
         private void RewardedEmployeesList_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            
             foreach (ListViewItem item in RewardedEmployeesList.SelectedItems)
-	        {
+            {
                 string id = item.Text;
-                string level = item.SubItems[0].Text;
-                giveUpList.Add(id, level);
-                giveUpItemList.Add(item);
+                string level = item.SubItems[1].Text;
+                if (!giveUpIdList.Contains(id))
+                {
+                    giveUpIdList.Add(id);
+                    giveUpItemList.Add(item);
+                }
+               
             }
-            if (giveUpList.Count > 0)
+            if (giveUpIdList.Count > 0)
             {
                 BackToPoolButton.Enabled = true;
             }
@@ -161,29 +169,32 @@ namespace MBLottery
             {
                 BackToPoolButton.Enabled = false;
             }
-            
+
         }
 
         private void BackToPoolButton_Click(object sender, EventArgs e)
         {
-            foreach (var item in giveUpList)
+            foreach (string id in giveUpIdList)
             {
-                removeRewardedEmployeeFromFile(item.Key);
+                removeRewardedEmployees(id);
             }
             foreach (var item in giveUpItemList)
             {
                 RewardedEmployeesList.Items.Remove(item);
+
             }
+            giveUpItemList.Clear();
             ReLotteryButton.Enabled = true;
             BackToPoolButton.Enabled = false;
 
         }
 
-        private void removeRewardedEmployeeFromFile(string id)
+        private void removeRewardedEmployees(string id)
         {
             string newRewaredEmployeesStr = "";
-            if (string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id))
             {
+                rewardedEmployees.Remove(id);
                 if (File.Exists(resultFilePath))
                 {
                     string encryptedString = File.ReadAllText(resultFilePath);
@@ -198,7 +209,8 @@ namespace MBLottery
                             string[] info = item.Split(',');
                             if (id == info[0])
                             {
-
+                                RewardedEmployeesList.Items.Add(info[0]);
+                                RewardedEmployeesList.Items[i].SubItems.Add(info[1]);
                             }
                             else
                             {
@@ -210,15 +222,16 @@ namespace MBLottery
                     MBLottery.writeToFile(resultFilePath, encrytedText);
                 }
             }
-            
+
         }
+
         private void ReLotteryButton_Click(object sender, EventArgs e)
         {
-            
+
             switch (_status)
             {
                 case LotteryStatus.Started:
-                    
+
                     timer1.Enabled = false;
                     _status = LotteryStatus.Stopped;
                     _rollingPendingList();
@@ -232,19 +245,25 @@ namespace MBLottery
                         _updatePendingEmp();
                         timer1.Enabled = true;
                         _status = LotteryStatus.Started;
-                    } 
+                    }
                     else
                     {
                         MessageBox.Show("没有未抽奖名额.提前祝您春节快乐！！！");
                     }
                     break;
             }
-            
+
         }
         private bool isNeedToLottery()
         {
-            if (giveUpList.Count > 0)
+            if (giveUpIdList.Count > 0)
             {
+                foreach (string id in giveUpIdList)
+                {
+                    _curRemovedId = id;
+                    _level = rewardedEmployees[id].Level;
+                    break;
+                }
                 return true;
             }
             else
@@ -256,7 +275,7 @@ namespace MBLottery
         {
             //int index = -1;
             Employee curEmployee = null;
-            string employeeImagePath="";
+            string employeeImagePath = "";
             try
             {
                 int count = pendingEmployees.Values.Count;
@@ -280,12 +299,12 @@ namespace MBLottery
                             else
                             {
                                 AwardedEmployeePicBox.Image = Image.FromFile(inputPath + "\\Images\\Employees\\MB.jpg");
-                            }  
+                            }
 
                         }
                     }
                 }
-                
+
                 MBLottery._logHandler.logging("End-------------------");
 
             }
@@ -304,6 +323,7 @@ namespace MBLottery
             currentRewardedEmployee = pendingEmployees[currentRewardedIndex];
             if (currentRewardedEmployee != null)
             {
+                currentRewardedEmployee.Level = _level;
                 employeeImagePath = inputPath + "\\Images\\Employees\\" + currentRewardedEmployee.Id + ".jpg";
                 if (File.Exists(employeeImagePath))
                 {
@@ -313,10 +333,13 @@ namespace MBLottery
                 {
                     AwardedEmployeePicBox.Image = Image.FromFile(inputPath + "\\Images\\Employees\\MB.jpg");
                 }
-
+                //remove out from lists
+                pendingEmployees.Remove(currentRewardedIndex);
+                giveUpIdList.Remove(_curRemovedId);
+                _curRemovedId = "";
                 _saveResult();
             }
-           
+
         }
         private void _saveResult()
         {

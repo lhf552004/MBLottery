@@ -74,19 +74,19 @@ namespace MBLottery
             {
                 if (isLottery)
                 {
-                    lotteryPlayer.SoundLocation = inputPath + "\\lotterying.wav";
+                    lotteryPlayer.SoundLocation = inputPath + "\\Musics\\lotterying.wav";
                     lotteryPlayer.PlayLooping();
                 }
                 else
                 {
                     if (isSpecial)
                     {
-                        lotteryPlayer.SoundLocation = inputPath + "\\specialCongratulation.wav";
+                        lotteryPlayer.SoundLocation = inputPath + "\\Musics\\specialCongratulation.wav";
 
                     }
                     else
                     {
-                        lotteryPlayer.SoundLocation = inputPath + "\\congratulation.wav";
+                        lotteryPlayer.SoundLocation = inputPath + "\\Musics\\congratulation.wav";
                     }
                     lotteryPlayer.Play();
                 }  

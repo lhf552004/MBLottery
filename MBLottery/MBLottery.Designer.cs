@@ -67,11 +67,16 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.InfoENLabel = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.AdditionalRadioButton = new System.Windows.Forms.RadioButton();
+            this.AdditionalRewardCountNum = new System.Windows.Forms.NumericUpDown();
+            this.BossPowerCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.AwardedEmployeePicBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpecialRewardCountNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FirstRewardCountNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SecondRewardCountNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ThirdRewardCountNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AdditionalRewardCountNum)).BeginInit();
             this.SuspendLayout();
             // 
             // timer1
@@ -199,7 +204,6 @@
             this.ThirdRadioButton.Name = "ThirdRadioButton";
             this.ThirdRadioButton.Size = new System.Drawing.Size(61, 17);
             this.ThirdRadioButton.TabIndex = 12;
-            this.ThirdRadioButton.TabStop = true;
             this.ThirdRadioButton.Text = "三等奖";
             this.ThirdRadioButton.UseVisualStyleBackColor = false;
             // 
@@ -231,11 +235,11 @@
             // 
             this.SubjectLabel.AutoSize = true;
             this.SubjectLabel.BackColor = System.Drawing.Color.Transparent;
-            this.SubjectLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SubjectLabel.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SubjectLabel.ForeColor = System.Drawing.Color.Yellow;
             this.SubjectLabel.Location = new System.Drawing.Point(312, 111);
             this.SubjectLabel.Name = "SubjectLabel";
-            this.SubjectLabel.Size = new System.Drawing.Size(626, 55);
+            this.SubjectLabel.Size = new System.Drawing.Size(610, 55);
             this.SubjectLabel.TabIndex = 9;
             this.SubjectLabel.Text = "纽豹集团无锡2017年会抽奖";
             // 
@@ -308,7 +312,7 @@
             this.AutoSelectLevelCheckBox.Checked = true;
             this.AutoSelectLevelCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.AutoSelectLevelCheckBox.ForeColor = System.Drawing.Color.Gold;
-            this.AutoSelectLevelCheckBox.Location = new System.Drawing.Point(646, 261);
+            this.AutoSelectLevelCheckBox.Location = new System.Drawing.Point(18, 195);
             this.AutoSelectLevelCheckBox.Name = "AutoSelectLevelCheckBox";
             this.AutoSelectLevelCheckBox.Size = new System.Drawing.Size(74, 17);
             this.AutoSelectLevelCheckBox.TabIndex = 14;
@@ -539,6 +543,54 @@
             this.InfoENLabel.Size = new System.Drawing.Size(0, 23);
             this.InfoENLabel.TabIndex = 22;
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.Gold;
+            this.label11.Location = new System.Drawing.Point(782, 258);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(26, 20);
+            this.label11.TabIndex = 9;
+            this.label11.Text = "名";
+            // 
+            // AdditionalRadioButton
+            // 
+            this.AdditionalRadioButton.AutoSize = true;
+            this.AdditionalRadioButton.BackColor = System.Drawing.Color.Transparent;
+            this.AdditionalRadioButton.Enabled = false;
+            this.AdditionalRadioButton.Location = new System.Drawing.Point(646, 261);
+            this.AdditionalRadioButton.Name = "AdditionalRadioButton";
+            this.AdditionalRadioButton.Size = new System.Drawing.Size(61, 17);
+            this.AdditionalRadioButton.TabIndex = 12;
+            this.AdditionalRadioButton.Text = "安慰奖";
+            this.AdditionalRadioButton.UseVisualStyleBackColor = false;
+            this.AdditionalRadioButton.Visible = false;
+            // 
+            // AdditionalRewardCountNum
+            // 
+            this.AdditionalRewardCountNum.BackColor = System.Drawing.Color.Red;
+            this.AdditionalRewardCountNum.Location = new System.Drawing.Point(713, 258);
+            this.AdditionalRewardCountNum.Name = "AdditionalRewardCountNum";
+            this.AdditionalRewardCountNum.Size = new System.Drawing.Size(63, 20);
+            this.AdditionalRewardCountNum.TabIndex = 17;
+            this.AdditionalRewardCountNum.Visible = false;
+            this.AdditionalRewardCountNum.ValueChanged += new System.EventHandler(this.AdditionalRewardCountNum_ValueChanged);
+            // 
+            // BossPowerCheckBox
+            // 
+            this.BossPowerCheckBox.AutoSize = true;
+            this.BossPowerCheckBox.BackColor = System.Drawing.Color.Transparent;
+            this.BossPowerCheckBox.ForeColor = System.Drawing.Color.Gold;
+            this.BossPowerCheckBox.Location = new System.Drawing.Point(675, 284);
+            this.BossPowerCheckBox.Name = "BossPowerCheckBox";
+            this.BossPowerCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.BossPowerCheckBox.TabIndex = 14;
+            this.BossPowerCheckBox.Text = "领导特权";
+            this.BossPowerCheckBox.UseVisualStyleBackColor = false;
+            this.BossPowerCheckBox.CheckedChanged += new System.EventHandler(this.BossPowerCheckBox_CheckedChanged);
+            // 
             // MBLottery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -551,6 +603,7 @@
             this.Controls.Add(this.BackToPoolButton);
             this.Controls.Add(this.ShowRewardedListButton);
             this.Controls.Add(this.GiveUpButton);
+            this.Controls.Add(this.AdditionalRewardCountNum);
             this.Controls.Add(this.ThirdRewardCountNum);
             this.Controls.Add(this.SecondRewardCountNum);
             this.Controls.Add(this.FirstRewardCountNum);
@@ -558,6 +611,7 @@
             this.Controls.Add(this.AwardedEmployeePicBox);
             this.Controls.Add(this.SetScreenButton);
             this.Controls.Add(this.OpenFileButton);
+            this.Controls.Add(this.BossPowerCheckBox);
             this.Controls.Add(this.AutoSelectLevelCheckBox);
             this.Controls.Add(this.PendingEmployeesListBox);
             this.Controls.Add(this.RewardedEmployeesListBox);
@@ -567,11 +621,13 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.RewardedEmployeesLabel);
+            this.Controls.Add(this.AdditionalRadioButton);
             this.Controls.Add(this.ThirdRadioButton);
             this.Controls.Add(this.SecondRadioButton);
             this.Controls.Add(this.LotteryButton);
             this.Controls.Add(this.SpecialRadioButton);
             this.Controls.Add(this.FirstRadioButton);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -592,6 +648,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.FirstRewardCountNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SecondRewardCountNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ThirdRewardCountNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AdditionalRewardCountNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -638,6 +695,10 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label InfoENLabel;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.RadioButton AdditionalRadioButton;
+        private System.Windows.Forms.NumericUpDown AdditionalRewardCountNum;
+        private System.Windows.Forms.CheckBox BossPowerCheckBox;
     }
 }
 

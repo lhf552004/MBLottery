@@ -7,11 +7,11 @@ namespace BusinessObjects
 {
     public enum LotteryLevel
     {
-        SpecialLevel = 0,
-        FirstLevel = 1,
-        SecondLevel = 2,
-        ThirdLevel = 3,
-        AdditionalLevel = 4,
+        SpecialLevel =3,
+        FirstLevel = 2,
+        SecondLevel = 1,
+        ThirdLevel = 0,
+        AdditionalLevel = 20,
         Unknown = 99
     }
     public class Employee

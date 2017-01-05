@@ -52,7 +52,12 @@ namespace BusinessObjects
             get { return _level; }
             set { _level = value; }
         }
-
+        private string rewardId;
+        public string RewardId
+        {
+            get { return rewardId; }
+            set { rewardId = value; }
+        }
         private string _imagePath;
 
         public string ImagePath

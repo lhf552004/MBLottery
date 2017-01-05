@@ -4,3 +4,5 @@ obj/
 BussinessObjects/Bin/
 *.manifest
 .svn
+Images/
+MaterialSkin.dll

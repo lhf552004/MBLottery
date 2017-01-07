@@ -39,7 +39,7 @@ namespace MBLottery
         public static int rollingCount = 14;
         private Dictionary<LotteryLevel, int> acutualLotteryCountDic = new Dictionary<LotteryLevel, int>();
         private Dictionary<LotteryLevel, int> targetLotteryCountDic = new Dictionary<LotteryLevel, int>();
-      
+
         private LotteryStatus _status = LotteryStatus.NotStarted;
         private LotteryLevel _level = LotteryLevel.ThirdLevel;
         /// <summary>
@@ -78,7 +78,7 @@ namespace MBLottery
 
         #region Private Method
 
-        private void backgroundLotteryingAudioHandler(bool isPlay,bool isLottery =false, bool isSpecial=false)
+        private void backgroundLotteryingAudioHandler(bool isPlay, bool isLottery = false, bool isSpecial = false)
         {
             if (isPlay)
             {
@@ -99,13 +99,13 @@ namespace MBLottery
                         lotteryPlayer.SoundLocation = inputPath + "\\Musics\\congratulation.wav";
                     }
                     lotteryPlayer.Play();
-                }  
+                }
             }
             else
             {
                 lotteryPlayer.Stop();
             }
-            
+
         }
 
         private void loadRewardCategory()
@@ -166,12 +166,12 @@ namespace MBLottery
                 Reward addtionalActualReward = new Reward();
                 addtionalActualReward.Id = AdditionalLevelID;
                 addtionalActualReward.Quantity = 0;
-                addtionalActualReward.Name = rewardName;
+                addtionalActualReward.Name = "惊喜奖";
                 if (!actualRewardsDic.ContainsKey(AdditionalLevelID))
                 {
                     actualRewardsDic.Add(AdditionalLevelID, addtionalActualReward);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -206,15 +206,20 @@ namespace MBLottery
                     actualReward = actualRewardsDic[key];
                     if (targetReward.Quantity > actualReward.Quantity)
                     {
+
                         isOK = true;
                         curTargetReward = targetReward;
                         break;
                     }
                 }
             }
-            if (!isOK)
+            if (isOK)
             {
-
+                Reward theActualReward = actualRewardsDic[curTargetReward.Id];
+                if ((curTargetReward.Quantity - theActualReward.Quantity) > pendingEmployees.Count)
+                {
+                    isOK = false;
+                }
             }
             //foreach (LotteryLevel type in Enum.GetValues(typeof(LotteryLevel)))
             //{
@@ -273,7 +278,7 @@ namespace MBLottery
                 _saveResult();
             }
         }
-    
+
 
         private void _showAwardedEmployee()
         {
@@ -294,7 +299,7 @@ namespace MBLottery
                     {
                         prizeName = targetRewardsDic[temp.RewardId].Name;
                     }
-                    RewardedEmployeesListBox.Items.Add(i +" " + prizeName + " " + temp.Id + " " + temp.Name);
+                    RewardedEmployeesListBox.Items.Add(i + "," + prizeName + "," + temp.Id + "," + temp.Name);
                 }
 
             }
@@ -380,6 +385,10 @@ namespace MBLottery
             try
             {
                 int count = pendingEmployees.Values.Count;
+                if (rollingCount > count)
+                {
+                    rollingCount = count;
+                }
                 indexList = RandomExt.getRandomNumberList(rollingCount, count);
                 PendingEmployeesListBox.Items.Clear();
                 _logHandler.logging("Start-------------------");
@@ -415,6 +424,7 @@ namespace MBLottery
             catch (Exception ex)
             {
                 _logHandler.logging(ex.Message);
+                MessageBox.Show(ex.Message);
             }
 
 
@@ -519,6 +529,7 @@ namespace MBLottery
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                _logHandler.logging(ex.Message);
             }
 
         }
@@ -556,6 +567,10 @@ namespace MBLottery
                             int quantity = actualRewardsDic[curEmployee.RewardId].Quantity;
                             quantity++;
                             actualRewardsDic[curEmployee.RewardId].Quantity = quantity;
+                            if (curEmployee.RewardId == AdditionalLevelID)
+                            {
+                                targetRewardsDic[curEmployee.RewardId].Quantity = quantity;
+                            }
                         }
                         //curEmployee.Level = (LotteryLevel)(Enum.Parse(typeof(LotteryLevel), info[1]));
                         //if (curEmployee.Level == LotteryLevel.SpecialLevel)
@@ -577,7 +592,7 @@ namespace MBLottery
                         rewardedEmployees.Add(curEmployee.Id, curEmployee);
                     }
                 }
-               
+
 
             }
             //acutualLotteryCountDic[LotteryLevel.SpecialLevel] = actualSpecialCount;
@@ -705,7 +720,7 @@ namespace MBLottery
             PrizeNameLabel.Text = "";
             AwardedEmployeePicBox.Visible = false;
             backgroundLotteryingAudioHandler(false);
-          
+
         }
         #endregion
 
@@ -714,61 +729,69 @@ namespace MBLottery
         #region Event Handler
         private void LotteryButton_Click(object sender, EventArgs e)
         {
-
-            backgroundLotteryingAudioHandler(false);
-           
-            if (_status == LotteryStatus.Started)
+            try
             {
-                //user clicked "stop" button
-                //now should deal with rewarded employees
-                LotteryButton.BackgroundImage = Resources.start;
-                _status = LotteryStatus.Stopped;
+                backgroundLotteryingAudioHandler(false);
 
-                _getAwardedEmployee();
-                timer1.Enabled = false;
-
-                TotalEmployeesLabel.Text = pendingEmployees.Count.ToString();
-                RewardedEmpNameLabel.Text = currentRewardedEmployee.Name;
-
-                //_autoSelect();
-                if (curTargetReward.Id == "0")
+                if (_status == LotteryStatus.Started)
                 {
-                    backgroundLotteryingAudioHandler(true,false,true);
+                    //user clicked "stop" button
+                    //now should deal with rewarded employees
+                    LotteryButton.BackgroundImage = Resources.start;
+                    _status = LotteryStatus.Stopped;
+
+                    _getAwardedEmployee();
+                    timer1.Enabled = false;
+
+                    TotalEmployeesLabel.Text = pendingEmployees.Count.ToString();
+                    RewardedEmpNameLabel.Text = currentRewardedEmployee.Name;
+
+                    //_autoSelect();
+                    if (curTargetReward.Id == "0")
+                    {
+                        backgroundLotteryingAudioHandler(true, false, true);
+                    }
+                    else
+                    {
+                        backgroundLotteryingAudioHandler(true, false, false);
+                    }
+                    GiveUpButton.Enabled = true;
                 }
-                else
+                else if (_status == LotteryStatus.Stopped || _status == LotteryStatus.NotStarted)
                 {
-                    backgroundLotteryingAudioHandler(true, false, false);
+
+                    //user clicked "Start" button
+                    //now is searching pending employees in the timer
+                    if (!_autoSelect())
+                    {
+                        //MessageBox.Show("本年度抽奖已经完成，祝大家吃好喝好玩好！！！");
+                        End theEnd = new End();
+
+                        theEnd.ShowDialog();
+                        return;
+                    }
+                    backgroundLotteryingAudioHandler(true, true);
+                    _updatePendingEmp();
+                    GiveUpButton.Enabled = false;
+                    PendingEmployeesListBox.Items.Clear();
+                    LotteryButton.BackgroundImage = Resources.stop;
+                    _status = LotteryStatus.Started;
+                    PrizeNameLabel.Text = curTargetReward.Name;
+
+                    timer1.Enabled = true;
+
+                    AwardedEmployeePicBox.Visible = true;
                 }
-                GiveUpButton.Enabled = true;
             }
-            else if (_status == LotteryStatus.Stopped || _status == LotteryStatus.NotStarted)
+            catch (System.Exception ex)
             {
-               
-                //user clicked "Start" button
-                //now is searching pending employees in the timer
-                if (!_autoSelect())
-                {
-                    //MessageBox.Show("本年度抽奖已经完成，祝大家吃好喝好玩好！！！");
-                    End theEnd = new End();
-                    
-                    theEnd.ShowDialog();
-                    return;
-                }
-                backgroundLotteryingAudioHandler(true, true);
-                _updatePendingEmp();
-                GiveUpButton.Enabled = false;
-                PendingEmployeesListBox.Items.Clear();
-                LotteryButton.BackgroundImage = Resources.stop;
-                _status = LotteryStatus.Started;
-                PrizeNameLabel.Text = curTargetReward.Name;
-
-                timer1.Enabled = true;
-
-                AwardedEmployeePicBox.Visible = true;
+                MessageBox.Show(ex.Message);
+                _logHandler.logging(ex.Message);
             }
+
 
         }
-       
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             _rollingPendingList();
@@ -795,12 +818,12 @@ namespace MBLottery
         private void FirstRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             _level = LotteryLevel.FirstLevel;
-          
+
         }
         private void SecondRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             _level = LotteryLevel.SecondLevel;
-           
+
         }
 
         private void ThirdRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -814,7 +837,7 @@ namespace MBLottery
 
         private void MBLottery_Load(object sender, EventArgs e)
         {
-            
+
             _maximizeForm();
             PendingEmployeesListBox.Items.Clear();
             RewardedEmployeesListBox.Items.Clear();
@@ -827,8 +850,8 @@ namespace MBLottery
             targetRewardsDic.Clear();
             actualRewardsDic.Clear();
             _IsAuto = AutoSelectLevelCheckBox.Checked;
-            
-            
+
+
             //System.Media.SoundPlayer player = new System.Media.SoundPlayer();
             try
             {
@@ -893,7 +916,7 @@ namespace MBLottery
             pendingEmployees.Add(currentRewardedIndex, currentRewardedEmployee);
             //update from count dictionary
             actualRewardsDic[currentRewardedEmployee.RewardId].Quantity = actualRewardsDic[currentRewardedEmployee.RewardId].Quantity - 1;
-            
+
             _showAwardedEmployee();
             //remove the rewarded employee from file
             string resultFilePath = System.Windows.Forms.Application.StartupPath + "\\result.txt";
@@ -939,7 +962,7 @@ namespace MBLottery
             if (!string.IsNullOrEmpty(curItem))
             {
                 BackToPoolButton.Enabled = true;
-                string[] rewardedInfo = curItem.Split(' ');
+                string[] rewardedInfo = curItem.Split(',');
                 selectedRewardedIndex = rewardedInfo[2];
                 if (rewardedEmployees.ContainsKey(selectedRewardedIndex))
                 {
@@ -972,7 +995,7 @@ namespace MBLottery
                 //    }
                 //}
 
-                
+
             }
 
         }
@@ -1018,7 +1041,7 @@ namespace MBLottery
         {
             int targetAdditionalCount = (int)AdditionalRewardCountNum.Value;
             targetRewardsDic[AdditionalLevelID].Quantity = targetRewardsDic[AdditionalLevelID].Quantity + 1;
-            
+
         }
         #endregion
 
@@ -1026,36 +1049,31 @@ namespace MBLottery
         {
             if (BossPowerCheckBox.Checked == true)
             {
-                AdditionalRadioButton.Visible = true;
+
                 AdditionalRewardCountNum.Visible = true;
                 AdditionalRewardUnitLabel.Visible = true;
-            } 
+            }
             else
             {
-                AdditionalRadioButton.Visible = false;
+
                 AdditionalRewardCountNum.Visible = false;
                 AdditionalRewardUnitLabel.Visible = false;
                 targetRewardsDic[AdditionalLevelID].Quantity = 0;
                 AdditionalRewardCountNum.Value = 0;
             }
-            
+
         }
 
         private void ExitButton_MouseHover(object sender, EventArgs e)
         {
             Button btn = sender as Button;
-            btn.FlatAppearance.BorderSize = 1;  
+            btn.FlatAppearance.BorderSize = 1;
         }
 
         private void ExitButton_MouseLeave(object sender, EventArgs e)
         {
             Button btn = sender as Button;
-            btn.FlatAppearance.BorderSize = 0;  
+            btn.FlatAppearance.BorderSize = 0;
         }
-
-       
-       
-
-       
     }
 }

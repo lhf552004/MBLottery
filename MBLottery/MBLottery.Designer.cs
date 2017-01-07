@@ -50,7 +50,6 @@ namespace MBLottery
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.AdditionalRewardUnitLabel = new System.Windows.Forms.Label();
-            this.AdditionalRadioButton = new System.Windows.Forms.RadioButton();
             this.AdditionalRewardCountNum = new System.Windows.Forms.NumericUpDown();
             this.BossPowerCheckBox = new System.Windows.Forms.CheckBox();
             this.RewardedEmployeesListBox = new System.Windows.Forms.ListBox();
@@ -316,19 +315,6 @@ namespace MBLottery
             this.AdditionalRewardUnitLabel.Text = "名";
             this.AdditionalRewardUnitLabel.Visible = false;
             // 
-            // AdditionalRadioButton
-            // 
-            this.AdditionalRadioButton.AutoSize = true;
-            this.AdditionalRadioButton.BackColor = System.Drawing.Color.Transparent;
-            this.AdditionalRadioButton.Enabled = false;
-            this.AdditionalRadioButton.Location = new System.Drawing.Point(668, 177);
-            this.AdditionalRadioButton.Name = "AdditionalRadioButton";
-            this.AdditionalRadioButton.Size = new System.Drawing.Size(61, 17);
-            this.AdditionalRadioButton.TabIndex = 12;
-            this.AdditionalRadioButton.Text = "安慰奖";
-            this.AdditionalRadioButton.UseVisualStyleBackColor = false;
-            this.AdditionalRadioButton.Visible = false;
-            // 
             // AdditionalRewardCountNum
             // 
             this.AdditionalRewardCountNum.BackColor = System.Drawing.Color.Red;
@@ -414,7 +400,6 @@ namespace MBLottery
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.RewardedEmployeesLabel);
-            this.Controls.Add(this.AdditionalRadioButton);
             this.Controls.Add(this.LotteryButton);
             this.Controls.Add(this.AdditionalRewardUnitLabel);
             this.Controls.Add(this.ExitButton);
@@ -455,7 +440,6 @@ namespace MBLottery
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label AdditionalRewardUnitLabel;
-        private System.Windows.Forms.RadioButton AdditionalRadioButton;
         private System.Windows.Forms.NumericUpDown AdditionalRewardCountNum;
         private System.Windows.Forms.CheckBox BossPowerCheckBox;
         private System.Windows.Forms.Label RewardedEmpNameLabel;

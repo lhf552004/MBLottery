@@ -14,10 +14,10 @@ namespace MBLottery
         public End()
         {
             InitializeComponent();
-            System.DateTime targetTime=new System.DateTime(2017,1,5); 
+            System.DateTime targetTime=new System.DateTime(2017,1,20); 
             System.DateTime curTime = System.DateTime.Now;
 
-            if (targetTime.Date == curTime.Date)
+            if (targetTime.Date == curTime.Date && curTime.Hour>18)
             {
                 label3.Visible = true;
             }

@@ -861,6 +861,11 @@ namespace MBLottery
             _loadEmployees();
             _showAwardedEmployee();
             _showOpenFileBtn();
+            string backgroudPic = inputPath + "\\Images\\background.jpg";
+            if (File.Exists(backgroudPic))
+            {
+                this.BackgroundImage = Image.FromFile(backgroudPic);
+            }
             this.Show();
 
         }

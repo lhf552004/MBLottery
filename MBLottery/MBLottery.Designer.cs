@@ -77,7 +77,7 @@ namespace MBLottery
             this.LotteryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LotteryButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LotteryButton.ForeColor = System.Drawing.Color.Gold;
-            this.LotteryButton.Location = new System.Drawing.Point(424, 646);
+            this.LotteryButton.Location = new System.Drawing.Point(420, 646);
             this.LotteryButton.Name = "LotteryButton";
             this.LotteryButton.Size = new System.Drawing.Size(227, 66);
             this.LotteryButton.TabIndex = 0;

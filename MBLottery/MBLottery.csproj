@@ -141,6 +141,10 @@
     <None Include="Images\restart.jpg" />
     <None Include="Images\stop.jpg" />
     <None Include="Images\me.JPG" />
+    <None Include="Images\backgroundNew.jpg" />
+    <None Include="Images\giveup.jpg" />
+    <None Include="Images\team.JPG" />
+    <None Include="Images\team-small.JPG" />
     <Content Include="Logo.ico" />
   </ItemGroup>
   <ItemGroup>

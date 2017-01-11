@@ -30,25 +30,20 @@ namespace MBLottery
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MBLottery));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.LotteryButton = new System.Windows.Forms.Button();
             this.OpenFileButton = new System.Windows.Forms.Button();
-            this.RewardedEmployeesLabel = new System.Windows.Forms.Label();
             this.OpenEmployeesFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.TotalEmployeesLabel = new System.Windows.Forms.Label();
             this.ExitButton = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.StatusLabel = new System.Windows.Forms.Label();
             this.PendingEmployeesListBox = new System.Windows.Forms.ListBox();
             this.AutoSelectLevelCheckBox = new System.Windows.Forms.CheckBox();
             this.SetScreenButton = new System.Windows.Forms.Button();
             this.AwardedEmployeePicBox = new System.Windows.Forms.PictureBox();
-            this.GiveUpButton = new System.Windows.Forms.Button();
-            this.ShowRewardedListButton = new System.Windows.Forms.Button();
             this.BackToPoolButton = new System.Windows.Forms.Button();
             this.ResetButton = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.AdditionalRewardUnitLabel = new System.Windows.Forms.Label();
             this.AdditionalRewardCountNum = new System.Windows.Forms.NumericUpDown();
             this.BossPowerCheckBox = new System.Windows.Forms.CheckBox();
@@ -96,19 +91,6 @@ namespace MBLottery
             this.OpenFileButton.UseVisualStyleBackColor = true;
             this.OpenFileButton.Click += new System.EventHandler(this.OpenFileButton_Click);
             // 
-            // RewardedEmployeesLabel
-            // 
-            this.RewardedEmployeesLabel.AutoSize = true;
-            this.RewardedEmployeesLabel.BackColor = System.Drawing.Color.Transparent;
-            this.RewardedEmployeesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RewardedEmployeesLabel.ForeColor = System.Drawing.Color.Gold;
-            this.RewardedEmployeesLabel.Location = new System.Drawing.Point(766, 329);
-            this.RewardedEmployeesLabel.Name = "RewardedEmployeesLabel";
-            this.RewardedEmployeesLabel.Size = new System.Drawing.Size(210, 25);
-            this.RewardedEmployeesLabel.TabIndex = 2;
-            this.RewardedEmployeesLabel.Text = "Rewarded Employee";
-            this.RewardedEmployeesLabel.Visible = false;
-            // 
             // OpenEmployeesFileDialog
             // 
             this.OpenEmployeesFileDialog.FileName = "EmployeeXML";
@@ -119,7 +101,7 @@ namespace MBLottery
             this.TotalEmployeesLabel.AutoSize = true;
             this.TotalEmployeesLabel.BackColor = System.Drawing.Color.Transparent;
             this.TotalEmployeesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TotalEmployeesLabel.ForeColor = System.Drawing.Color.Gold;
+            this.TotalEmployeesLabel.ForeColor = System.Drawing.Color.LemonChiffon;
             this.TotalEmployeesLabel.Location = new System.Drawing.Point(858, 216);
             this.TotalEmployeesLabel.Name = "TotalEmployeesLabel";
             this.TotalEmployeesLabel.Size = new System.Drawing.Size(16, 16);
@@ -142,19 +124,6 @@ namespace MBLottery
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             this.ExitButton.MouseLeave += new System.EventHandler(this.ExitButton_MouseLeave);
             this.ExitButton.MouseHover += new System.EventHandler(this.ExitButton_MouseHover);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.Gold;
-            this.label5.Location = new System.Drawing.Point(12, 329);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(190, 25);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Rolling Employees";
-            this.label5.Visible = false;
             // 
             // StatusLabel
             // 
@@ -208,6 +177,7 @@ namespace MBLottery
             this.SetScreenButton.Size = new System.Drawing.Size(17, 18);
             this.SetScreenButton.TabIndex = 15;
             this.SetScreenButton.UseVisualStyleBackColor = true;
+            this.SetScreenButton.Visible = false;
             this.SetScreenButton.Click += new System.EventHandler(this.SetScreenButton_Click);
             // 
             // AwardedEmployeePicBox
@@ -222,103 +192,55 @@ namespace MBLottery
             this.AwardedEmployeePicBox.TabStop = false;
             this.AwardedEmployeePicBox.Visible = false;
             // 
-            // GiveUpButton
-            // 
-            this.GiveUpButton.BackColor = System.Drawing.Color.Red;
-            this.GiveUpButton.Enabled = false;
-            this.GiveUpButton.Location = new System.Drawing.Point(801, 597);
-            this.GiveUpButton.Name = "GiveUpButton";
-            this.GiveUpButton.Size = new System.Drawing.Size(88, 79);
-            this.GiveUpButton.TabIndex = 18;
-            this.GiveUpButton.Text = "放弃";
-            this.GiveUpButton.UseVisualStyleBackColor = false;
-            this.GiveUpButton.Visible = false;
-            this.GiveUpButton.Click += new System.EventHandler(this.GiveUpButton_Click);
-            // 
-            // ShowRewardedListButton
-            // 
-            this.ShowRewardedListButton.BackColor = System.Drawing.Color.Red;
-            this.ShowRewardedListButton.Location = new System.Drawing.Point(17, 119);
-            this.ShowRewardedListButton.Name = "ShowRewardedListButton";
-            this.ShowRewardedListButton.Size = new System.Drawing.Size(74, 63);
-            this.ShowRewardedListButton.TabIndex = 19;
-            this.ShowRewardedListButton.Text = "获奖记录";
-            this.ShowRewardedListButton.UseVisualStyleBackColor = false;
-            this.ShowRewardedListButton.Visible = false;
-            this.ShowRewardedListButton.Click += new System.EventHandler(this.ShowRewardedListButton_Click);
-            // 
             // BackToPoolButton
             // 
             this.BackToPoolButton.BackColor = System.Drawing.Color.Maroon;
-            this.BackToPoolButton.BackgroundImage = global::MBLottery.Properties.Resources.backPool;
+            this.BackToPoolButton.BackgroundImage = global::MBLottery.Properties.Resources.giveup;
             this.BackToPoolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.BackToPoolButton.Enabled = false;
-            this.BackToPoolButton.Location = new System.Drawing.Point(649, 412);
+            this.BackToPoolButton.FlatAppearance.BorderSize = 0;
+            this.BackToPoolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.BackToPoolButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.BackToPoolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BackToPoolButton.Location = new System.Drawing.Point(652, 437);
             this.BackToPoolButton.Name = "BackToPoolButton";
-            this.BackToPoolButton.Size = new System.Drawing.Size(47, 44);
+            this.BackToPoolButton.Size = new System.Drawing.Size(53, 36);
             this.BackToPoolButton.TabIndex = 20;
             this.BackToPoolButton.UseVisualStyleBackColor = false;
             this.BackToPoolButton.Click += new System.EventHandler(this.BackToPoolButton_Click);
             // 
             // ResetButton
             // 
-            this.ResetButton.BackColor = System.Drawing.Color.Red;
-            this.ResetButton.BackgroundImage = global::MBLottery.Properties.Resources.restart;
+            this.ResetButton.BackColor = System.Drawing.Color.Transparent;
             this.ResetButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ResetButton.FlatAppearance.BorderSize = 0;
             this.ResetButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.ResetButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.ResetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ResetButton.Location = new System.Drawing.Point(694, 646);
+            this.ResetButton.Location = new System.Drawing.Point(797, 591);
             this.ResetButton.Name = "ResetButton";
-            this.ResetButton.Size = new System.Drawing.Size(227, 66);
+            this.ResetButton.Size = new System.Drawing.Size(177, 33);
             this.ResetButton.TabIndex = 21;
             this.ResetButton.UseVisualStyleBackColor = false;
             this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.Transparent;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.Gold;
-            this.label9.Location = new System.Drawing.Point(766, 304);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(96, 25);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "获奖名单";
-            this.label9.Visible = false;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.Transparent;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.Gold;
-            this.label10.Location = new System.Drawing.Point(12, 304);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(96, 25);
-            this.label10.TabIndex = 2;
-            this.label10.Text = "滚动名单";
-            this.label10.Visible = false;
             // 
             // AdditionalRewardUnitLabel
             // 
             this.AdditionalRewardUnitLabel.AutoSize = true;
             this.AdditionalRewardUnitLabel.BackColor = System.Drawing.Color.Transparent;
-            this.AdditionalRewardUnitLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AdditionalRewardUnitLabel.ForeColor = System.Drawing.Color.Gold;
-            this.AdditionalRewardUnitLabel.Location = new System.Drawing.Point(804, 174);
+            this.AdditionalRewardUnitLabel.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AdditionalRewardUnitLabel.ForeColor = System.Drawing.Color.LemonChiffon;
+            this.AdditionalRewardUnitLabel.Location = new System.Drawing.Point(783, 724);
             this.AdditionalRewardUnitLabel.Name = "AdditionalRewardUnitLabel";
-            this.AdditionalRewardUnitLabel.Size = new System.Drawing.Size(26, 20);
+            this.AdditionalRewardUnitLabel.Size = new System.Drawing.Size(26, 22);
             this.AdditionalRewardUnitLabel.TabIndex = 9;
             this.AdditionalRewardUnitLabel.Text = "名";
             this.AdditionalRewardUnitLabel.Visible = false;
             // 
             // AdditionalRewardCountNum
             // 
-            this.AdditionalRewardCountNum.BackColor = System.Drawing.Color.Red;
-            this.AdditionalRewardCountNum.Location = new System.Drawing.Point(735, 174);
+            this.AdditionalRewardCountNum.BackColor = System.Drawing.Color.Firebrick;
+            this.AdditionalRewardCountNum.Location = new System.Drawing.Point(714, 724);
             this.AdditionalRewardCountNum.Name = "AdditionalRewardCountNum";
             this.AdditionalRewardCountNum.Size = new System.Drawing.Size(63, 20);
             this.AdditionalRewardCountNum.TabIndex = 17;
@@ -329,11 +251,11 @@ namespace MBLottery
             // 
             this.BossPowerCheckBox.AutoSize = true;
             this.BossPowerCheckBox.BackColor = System.Drawing.Color.Transparent;
-            this.BossPowerCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BossPowerCheckBox.ForeColor = System.Drawing.Color.Gold;
-            this.BossPowerCheckBox.Location = new System.Drawing.Point(848, 172);
+            this.BossPowerCheckBox.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BossPowerCheckBox.ForeColor = System.Drawing.Color.LemonChiffon;
+            this.BossPowerCheckBox.Location = new System.Drawing.Point(818, 722);
             this.BossPowerCheckBox.Name = "BossPowerCheckBox";
-            this.BossPowerCheckBox.Size = new System.Drawing.Size(57, 22);
+            this.BossPowerCheckBox.Size = new System.Drawing.Size(58, 24);
             this.BossPowerCheckBox.TabIndex = 14;
             this.BossPowerCheckBox.Text = "惊喜";
             this.BossPowerCheckBox.UseVisualStyleBackColor = false;
@@ -342,13 +264,13 @@ namespace MBLottery
             // RewardedEmployeesListBox
             // 
             this.RewardedEmployeesListBox.BackColor = System.Drawing.Color.Firebrick;
-            this.RewardedEmployeesListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RewardedEmployeesListBox.ForeColor = System.Drawing.Color.Gold;
+            this.RewardedEmployeesListBox.Font = new System.Drawing.Font("Microsoft YaHei", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RewardedEmployeesListBox.ForeColor = System.Drawing.Color.LemonChiffon;
             this.RewardedEmployeesListBox.FormattingEnabled = true;
-            this.RewardedEmployeesListBox.ItemHeight = 25;
+            this.RewardedEmployeesListBox.ItemHeight = 28;
             this.RewardedEmployeesListBox.Location = new System.Drawing.Point(713, 346);
             this.RewardedEmployeesListBox.Name = "RewardedEmployeesListBox";
-            this.RewardedEmployeesListBox.Size = new System.Drawing.Size(244, 229);
+            this.RewardedEmployeesListBox.Size = new System.Drawing.Size(244, 228);
             this.RewardedEmployeesListBox.TabIndex = 4;
             this.RewardedEmployeesListBox.SelectedIndexChanged += new System.EventHandler(this.RewardedEmployeesListBox_SelectedIndexChanged);
             // 
@@ -356,35 +278,33 @@ namespace MBLottery
             // 
             this.RewardedEmpNameLabel.AutoSize = true;
             this.RewardedEmpNameLabel.BackColor = System.Drawing.Color.Transparent;
-            this.RewardedEmpNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RewardedEmpNameLabel.ForeColor = System.Drawing.Color.Gold;
-            this.RewardedEmpNameLabel.Location = new System.Drawing.Point(126, 527);
+            this.RewardedEmpNameLabel.Font = new System.Drawing.Font("Microsoft YaHei", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RewardedEmpNameLabel.ForeColor = System.Drawing.Color.LemonChiffon;
+            this.RewardedEmpNameLabel.Location = new System.Drawing.Point(130, 527);
             this.RewardedEmpNameLabel.Name = "RewardedEmpNameLabel";
-            this.RewardedEmpNameLabel.Size = new System.Drawing.Size(0, 25);
+            this.RewardedEmpNameLabel.Size = new System.Drawing.Size(0, 38);
             this.RewardedEmpNameLabel.TabIndex = 2;
             // 
             // PrizeNameLabel
             // 
             this.PrizeNameLabel.AutoSize = true;
             this.PrizeNameLabel.BackColor = System.Drawing.Color.Transparent;
-            this.PrizeNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PrizeNameLabel.ForeColor = System.Drawing.Color.Gold;
+            this.PrizeNameLabel.Font = new System.Drawing.Font("Microsoft YaHei", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PrizeNameLabel.ForeColor = System.Drawing.Color.LemonChiffon;
             this.PrizeNameLabel.Location = new System.Drawing.Point(130, 440);
             this.PrizeNameLabel.Name = "PrizeNameLabel";
-            this.PrizeNameLabel.Size = new System.Drawing.Size(0, 25);
+            this.PrizeNameLabel.Size = new System.Drawing.Size(0, 38);
             this.PrizeNameLabel.TabIndex = 2;
             // 
             // MBLottery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::MBLottery.Properties.Resources.BackgroundNew;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1024, 768);
             this.Controls.Add(this.ResetButton);
             this.Controls.Add(this.BackToPoolButton);
-            this.Controls.Add(this.ShowRewardedListButton);
-            this.Controls.Add(this.GiveUpButton);
             this.Controls.Add(this.AdditionalRewardCountNum);
             this.Controls.Add(this.AwardedEmployeePicBox);
             this.Controls.Add(this.SetScreenButton);
@@ -396,10 +316,6 @@ namespace MBLottery
             this.Controls.Add(this.PrizeNameLabel);
             this.Controls.Add(this.RewardedEmpNameLabel);
             this.Controls.Add(this.StatusLabel);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.RewardedEmployeesLabel);
             this.Controls.Add(this.LotteryButton);
             this.Controls.Add(this.AdditionalRewardUnitLabel);
             this.Controls.Add(this.ExitButton);
@@ -422,23 +338,17 @@ namespace MBLottery
         private System.Windows.Forms.Button LotteryButton;
         //private ControlLibrary.CustomListBox RewardedEmployeesListBox;
         private System.Windows.Forms.ListBox RewardedEmployeesListBox;
-        private System.Windows.Forms.Label RewardedEmployeesLabel;
         private System.Windows.Forms.OpenFileDialog OpenEmployeesFileDialog;
         private System.Windows.Forms.Label TotalEmployeesLabel;
         private System.Windows.Forms.Button OpenFileButton;
         private System.Windows.Forms.Button ExitButton;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label StatusLabel;
         private System.Windows.Forms.ListBox PendingEmployeesListBox;
         private System.Windows.Forms.CheckBox AutoSelectLevelCheckBox;
         private System.Windows.Forms.Button SetScreenButton;
         private System.Windows.Forms.PictureBox AwardedEmployeePicBox;
-        private System.Windows.Forms.Button GiveUpButton;
-        private System.Windows.Forms.Button ShowRewardedListButton;
         private System.Windows.Forms.Button BackToPoolButton;
         private System.Windows.Forms.Button ResetButton;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label AdditionalRewardUnitLabel;
         private System.Windows.Forms.NumericUpDown AdditionalRewardCountNum;
         private System.Windows.Forms.CheckBox BossPowerCheckBox;

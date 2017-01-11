@@ -755,7 +755,7 @@ namespace MBLottery
                     {
                         backgroundLotteryingAudioHandler(true, false, false);
                     }
-                    GiveUpButton.Enabled = true;
+                    
                 }
                 else if (_status == LotteryStatus.Stopped || _status == LotteryStatus.NotStarted)
                 {
@@ -772,7 +772,7 @@ namespace MBLottery
                     }
                     backgroundLotteryingAudioHandler(true, true);
                     _updatePendingEmp();
-                    GiveUpButton.Enabled = false;
+                   
                     PendingEmployeesListBox.Items.Clear();
                     LotteryButton.BackgroundImage = Resources.stop;
                     _status = LotteryStatus.Started;

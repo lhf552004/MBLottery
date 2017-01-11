@@ -17,9 +17,10 @@ namespace MBLottery
             System.DateTime targetTime=new System.DateTime(2017,1,20); 
             System.DateTime curTime = System.DateTime.Now;
 
-            if (targetTime.Date == curTime.Date && curTime.Hour>18)
+            if (targetTime.Date == curTime.Date && curTime.Hour>=18)
             {
-                label3.Visible = true;
+                bossLabel.Visible = true;
+                bossLabel.Text = "Dear boss,please rise my money!";
             }
         }
 
@@ -27,5 +28,7 @@ namespace MBLottery
         {
             this.Close();
         }
+
+        
     }
 }

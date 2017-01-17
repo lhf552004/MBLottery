@@ -19,8 +19,8 @@ namespace MBLottery
 
             if (targetTime.Date == curTime.Date && curTime.Hour>=18)
             {
-                bossLabel.Visible = true;
-                bossLabel.Text = "Dear boss,please rise my money!";
+                //bossLabel.Visible = true;
+                //bossLabel.Text = "Dear boss,please rise my money!";
             }
         }
 

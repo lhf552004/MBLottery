@@ -46,6 +46,7 @@
     <Compile Include="Employee.cs" />
     <Compile Include="EncryptDecryptFile.cs" />
     <Compile Include="LogHandler.cs" />
+    <Compile Include="LotteryStatus.cs" />
     <Compile Include="RandomExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reward.cs" />

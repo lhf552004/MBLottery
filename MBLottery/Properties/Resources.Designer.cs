@@ -215,7 +215,7 @@ namespace MBLottery.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap team_small {
             get {
-                object obj = ResourceManager.GetObject("team-small", resourceCulture);
+                object obj = ResourceManager.GetObject("team_small", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

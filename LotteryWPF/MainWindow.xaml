@@ -1,0 +1,106 @@
+﻿<controls:MetroWindow x:Class="LotteryWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:LotteryWPF"
+        mc:Ignorable="d"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        Title="MainWindow" Height="1080" Width="1920" WindowState="Maximized" ShowTitleBar="False" ShowMaxRestoreButton="False" ShowMinButton="False" Loaded="MetroWindow_Loaded">
+    <controls:MetroWindow.Background>
+        <ImageBrush ImageSource="Resources/background.jpg"/>
+    </controls:MetroWindow.Background>
+    <controls:MetroWindow.Resources>
+        <DataTemplate x:Key="ProgrammerDutTemplate">
+            <Viewbox>
+
+            </Viewbox>
+        </DataTemplate>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#FFF5C212"/>
+            <Setter Property="Foreground" Value="#FF8F3D17"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="LightYellow" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Red" />
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+        </Style>
+    </controls:MetroWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="265*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="达特电子第16届抽奖活动" Foreground="Yellow" HorizontalAlignment="Center" FontSize="50" Margin="115,20,115,0" ></Label>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="44*"/>
+                <RowDefinition Height="175*"/>
+                <RowDefinition Height="46*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="617*"/>
+                <ColumnDefinition Width="617*"/>
+                <ColumnDefinition Width="auto" MinWidth="78"/>
+                <ColumnDefinition Width="600*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Label Content="剩余未抽奖总员工数"></Label>
+                <Label x:Name="TotalEmployeesLabel" Foreground="Yellow"></Label>
+            </StackPanel>
+            <CheckBox x:Name="AutoSelectLevelCheckBox" Grid.Row="0" Grid.Column="1" Margin="0,0,400,82" Visibility="Collapsed"></CheckBox>
+            <TextBox x:Name="AdditionalRewardCountNum" Grid.Column="2" Visibility="Hidden" Margin="0,22,0,23"/>
+            <Viewbox Grid.Column="0" Grid.Row="1">
+                <Grid Grid.Row="2">
+                    <Image x:Name="Envelope_jpg" Margin="0,6,0,-4" Source="Resources/Envelope.jpg" Stretch="UniformToFill"/>
+                    <TextBox x:Name="rewardLevelTextBox" TextWrapping="Wrap" Text="三等奖" HorizontalAlignment="Center" Foreground="Red" FontSize="45" Margin="345,508,414,434" FontWeight="Bold" Visibility="Hidden"/>
+                    <Label x:Name="label" Content="正在抽取" HorizontalAlignment="Left" Margin="175,251,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" FontSize="45"/>
+                    <Label x:Name="PrizeNameLabel" Content="杯子" HorizontalAlignment="Left" Margin="310,363,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" FontSize="45" RenderTransformOrigin="-0.928,0.594"/>
+                </Grid>
+            </Viewbox>
+            <Viewbox Grid.Column="1" Grid.Row="1">
+                <StackPanel Grid.Row="2">
+                    <Image x:Name="AwardedEmployeePicBox" Margin="0,0,-3,0" Source="{Binding SourceUri}" Stretch="UniformToFill" Height="391"/>
+                    <Label x:Name="RewardedEmpNameLabel" Content="" Height="50" Margin="84,309,79,32"></Label>
+                </StackPanel>
+            </Viewbox>
+            <Button x:Name="BackToPoolButton" Content="退回" Grid.Column="2" Grid.Row="1" Click="BackToPoolButton_Click" IsEnabled="False" Margin="8,237,8,238"/>
+            <ListBox  x:Name="RewardedEmployeesListBox" Grid.Column="3" Grid.Row="1" Background="Transparent" SelectionChanged="RewardedEmployeesListBox_SelectionChanged">
+
+            </ListBox>
+            <Button Grid.Column="0" Grid.Row="2" Margin="158,26,163,19" Content="重新开始" Click="ResetButton_Click"/>
+            <Button x:Name="LotteryButton" Click="LotteryButton_Click" Grid.Column="1" Grid.Row="2" Content="开始" Margin="167,27,154,20"/>
+        </Grid>
+    </Grid>
+
+</controls:MetroWindow>
